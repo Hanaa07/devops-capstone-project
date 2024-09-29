@@ -49,4 +49,16 @@ spec:
           # Delete files and directories starting with .. plus any other character
           rm -rf "${WORKSPACE_SOURCE_PATH}"/..?*
         fi
-
+    - name: tests
+      workspaces:
+        - name: source
+          workspace: pipeline-workspace
+      taskRef:
+        name: nose
+      params:
+      - name: database_uri
+        value: "sqlite:///test.db"
+      - name: args
+        value: "-v --with-spec --spec-color"
+      runAfter:
+        - clone
